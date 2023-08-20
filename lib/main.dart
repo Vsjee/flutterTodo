@@ -62,8 +62,8 @@ class _TodoListState extends State<TodoList> {
   }
 
   // Generate list of item widgets
-  Widget _buildTodoItem(String title) {
-    return ListTile(title: Text(title));
+  Widget _buildTodoItem(String title, int index) {
+    return ListTile(title: Text('$index. title'));
   }
 
   // Generate a single item widget - display the dialog
@@ -98,8 +98,8 @@ class _TodoListState extends State<TodoList> {
 
   List<Widget> _getItems() {
     final List<Widget> todoWidgets = <Widget>[];
-    for (String title in _todoList) {
-      todoWidgets.add(_buildTodoItem(title));
+    for (int i = 0; i < _todoList.length; i++) {
+      todoWidgets.add(_buildTodoItem(_todoList[i], i + 1));
     }
     return todoWidgets;
   }
