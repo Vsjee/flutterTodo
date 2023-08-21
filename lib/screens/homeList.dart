@@ -17,7 +17,20 @@ class _HomeListState extends State<HomeList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(children: _getItems()),
+      body: Container(
+          margin: const EdgeInsets.all(10),
+          child: ListView.separated(
+            itemCount: _getItems().length,
+            itemBuilder: (context, index) {
+              return _getItems()[index];
+            },
+            separatorBuilder: (context, index) {
+              return const Divider(
+                thickness: 2,
+              );
+            },
+          ),
+      ),
       floatingActionButton: FloatingActionButton(
           onPressed: () => _displayDialog(context),
           tooltip: 'Add',
@@ -41,7 +54,19 @@ class _HomeListState extends State<HomeList> {
 
   // Generate list of item widgets
   Widget _buildTodoItem(String title, int index) {
-    return ListTile(title: Text('$index. title'));
+    return ListTile(
+        title: Text(title),
+        dense: true,
+        contentPadding: const EdgeInsets.all(10),
+        leading: CircleAvatar(
+          backgroundColor: Colors.deepOrangeAccent,
+          child: Text(
+            index.toString(),
+            style: const TextStyle(color: Colors.black),
+          ),
+        ),
+        trailing: const Icon(Icons.check_circle_outline),
+    );
   }
 
   // Generate a single item widget - display the dialog
