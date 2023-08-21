@@ -16,21 +16,40 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrangeAccent),
           useMaterial3: true,
         ),
-      home: const TodoList(),
+      home: const Layout(),
     );
   }
 }
 
-class TodoList extends StatefulWidget {
-  const TodoList({super.key});
+class Layout extends StatefulWidget {
+  const Layout({super.key});
 
   @override
-  State<TodoList> createState() => _TodoListState();
+  State<Layout> createState() => _LayoutState();
 }
 
-class _TodoListState extends State<TodoList> {
+class _LayoutState extends State<Layout> {
   final List<String> _todoList = <String>[];
   final TextEditingController _textFieldController = TextEditingController();
+
+  int _selectedIndex = 0;
+
+  static const TextStyle optionStyle =
+  TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+
+  static const List<Widget> _widgetOptions = <Widget>[
+    HomeList(),
+    Text(
+      'Done tasks',
+      style: optionStyle,
+    ),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,14 +58,51 @@ class _TodoListState extends State<TodoList> {
           title: const Text('To-Do List'),
           backgroundColor: Colors.deepOrangeAccent,
       ),
+      body: _widgetOptions.elementAt(_selectedIndex),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.task),
+            label: 'Tasks',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.done),
+            label: 'Done',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.amber[800],
+        onTap: _onItemTapped,
+      ),
+    );
+  }
+}
+
+class HomeList extends StatefulWidget {
+  const HomeList({super.key});
+
+  @override
+  State<HomeList> createState() => _HomeListState();
+}
+
+class _HomeListState extends State<HomeList> {
+  final List<String> _todoList = <String>[];
+  final TextEditingController _textFieldController = TextEditingController();
+
+  static const TextStyle optionStyle =
+  TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
       body: ListView(children: _getItems()),
       floatingActionButton: FloatingActionButton(
           onPressed: () => _displayDialog(context),
           tooltip: 'Add',
           child: const Icon(
-              Icons.add,
-              color: Colors.deepOrange,
-              size: 36.0,
+            Icons.add,
+            color: Colors.deepOrange,
+            size: 36.0,
           )
       ),
     );
